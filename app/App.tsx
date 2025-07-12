@@ -3,7 +3,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import ChapterLogin from "./ChapterLogin";
 import LoginScreen from "./index";
+import MainContainer from "./MainContainer";
 import NormalLogin from "./NormalLogin";
+import FrontPage from "./screens/FrontPage";
+import HomeFeedViewer from "./screens/HomeFeedViewer";
+import Settings from "./screens/Settings";
+
 // import { Stack } from "expo-router";
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +17,7 @@ const Stack = createNativeStackNavigator();
 
 function RootStack() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="FrontPage">
       <Stack.Screen
         name="Home"
         component={LoginScreen}
@@ -20,6 +25,14 @@ function RootStack() {
       />
       <Stack.Screen name="ChapterLogin" component={ChapterLogin} />
       <Stack.Screen name="NormalLogin" component={NormalLogin} />
+      <Stack.Screen name="HomeScreen" component={HomeFeedViewer} />
+      <Stack.Screen
+        name="Main"
+        component={MainContainer}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="FrontPage" component={FrontPage} />
     </Stack.Navigator>
   );
 }

@@ -30,11 +30,11 @@ export default function Index() {
         />
       </View>
       <FrontButton
-        onPress={() => router.push("/ChapterLogin")}
+        onPress={() => router.replace("/ChapterLogin")}
         title="Join Your Chapter!"
       />
       <FrontButton
-        onPress={() => router.push("/NormalLogin")}
+        onPress={() => router.replace("/NormalLogin")}
         title="Not Part of a Greek Organization"
       />
     </SafeAreaView>
