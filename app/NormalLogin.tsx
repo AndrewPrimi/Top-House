@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Button, SafeAreaView, Text, TextInput, View } from "react-native";
 
@@ -8,6 +9,11 @@ const NormalLogin = () => {
   const [password, setPassword] = useState("Password");
   const [school, setSchool] = useState("University Name");
 
+  const router = useRouter();
+
+  const login = () => {
+    router.replace("/screens/AfterLoginScreen");
+  };
   return (
     <SafeAreaView style={{ alignItems: "center", flex: 1 }}>
       <Text>ChapterLogin (input logo here) </Text>
@@ -39,7 +45,7 @@ const NormalLogin = () => {
       <View
         style={{ width: 350, backgroundColor: "dodgerblue", borderRadius: 6 }}
       >
-        <Button title="Login In" color="white" />
+        <Button title="Login In" color="white" onPress={login} />
       </View>
     </SafeAreaView>
   );

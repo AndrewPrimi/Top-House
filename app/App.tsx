@@ -7,6 +7,7 @@ import MainContainer from "./MainContainer";
 import NormalLogin from "./NormalLogin";
 import FrontPage from "./screens/FrontPage";
 import HomeFeedViewer from "./screens/HomeFeedViewer";
+import SearchTab from "./screens/SearchTab";
 import Settings from "./screens/Settings";
 
 // import { Stack } from "expo-router";
@@ -17,7 +18,7 @@ const Stack = createNativeStackNavigator();
 
 function RootStack() {
   return (
-    <Stack.Navigator initialRouteName="FrontPage">
+    <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
         name="Home"
         component={LoginScreen}
@@ -31,6 +32,7 @@ function RootStack() {
         component={MainContainer}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="/SearchTab/:schools" component={SearchTab} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="FrontPage" component={FrontPage} />
     </Stack.Navigator>

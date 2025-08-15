@@ -24,7 +24,7 @@ const HomeFeed = () => {
       />
       <TouchableOpacity onPress={() => {}}>
         <Ionicons
-          onPress={() => router.push("./Settings")}
+          onPress={() => router.push("../screens/Settings")}
           name="settings-outline"
           size={30}
           color={Colors.black}
