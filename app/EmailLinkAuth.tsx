@@ -1,17 +1,10 @@
-const actionCodeSettings = {
-  // URL you want to redirect back to. The domain (www.example.com) for this
-  // URL must be in the authorized domains list in the Firebase Console.
-  url: "https://www.example.com/finishSignUp?cartId=1234",
-  // This must be true.
+export const actionCodeSettings = {
+  url: "https://top-house-dd9ed.web.app/emailSignIn",
   handleCodeInApp: true,
-  iOS: {
-    bundleId: "com.example.ios",
-  },
+  iOS: { bundleId: "com.tophouse.myapp" }, // must match your real bundle id
   android: {
-    packageName: "com.example.android",
+    packageName: "com.tophouse.myapp", // must match your real package
     installApp: true,
-    minimumVersion: "12",
+    // minimumVersion: '12', // optional; remove if you’re not sure
   },
-  // The domain must be configured in Firebase Hosting and owned by the project.
-  linkDomain: "custom-domain.com",
 };

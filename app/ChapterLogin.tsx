@@ -1,8 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import {
-  createUserWithEmailAndPassword,
   getAuth,
-  sendEmailVerification,
+  sendSignInLinkToEmail,
   validatePassword,
 } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -15,16 +15,17 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { actionCodeSettings } from "./EmailLinkAuth";
 import { auth, db } from "./firebaseConfig";
 
 const router = useRouter();
 const ChapterLogin = () => {
-  const [name, setName] = useState("Name");
-  const [lastName, setLastName] = useState("Last Name");
-  const [email, setEmail] = useState("Email");
-  const [phonenum, setPhoneNum] = useState("Phone Number");
-  const [password, setPassword] = useState("Password");
-  const [code, setCode] = useState("Chapter Code");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phonenum, setPhoneNum] = useState("");
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
 
   async function signup() {
     const status = await validatePassword(getAuth(), password);
@@ -38,12 +39,13 @@ const ChapterLogin = () => {
         return;
       }
     }
-    createUserWithEmailAndPassword(auth, email, password).then(
+    /* createUserWithEmailAndPassword(auth, email, password).then(
       async (userCredential) => {
         const user = userCredential.user;
         await sendEmailVerification(user);
       }
-    );
+    ); */
+
     set(ref(db, "users/" + name), {
       username: name,
       email: email,
@@ -56,6 +58,20 @@ const ChapterLogin = () => {
       })
       .catch(() => {
         console.error("Error saving user data:", "Did not work");
+      });
+
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        AsyncStorage.setItem("emailForSignIn", email);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
       });
 
     router.replace("/screens/AfterLoginScreen");
@@ -74,35 +90,48 @@ const ChapterLogin = () => {
         <ScrollView>
           <TextInput
             onChangeText={setName}
+            placeholder="Name"
+            placeholderTextColor={"gray"}
             value={name}
             style={[style.Element, { marginTop: 40 }]}
           />
           <TextInput
             onChangeText={setLastName}
+            placeholder="Last Name"
+            placeholderTextColor={"gray"}
             value={lastName}
             style={style.Element}
           />
           <TextInput
             onChangeText={setEmail}
+            placeholder="Email"
+            placeholderTextColor={"gray"}
             value={email}
             style={style.Element}
           />
           <TextInput
             onChangeText={setPhoneNum}
+            placeholder="Phone Number"
+            placeholderTextColor={"gray"}
             value={phonenum}
             style={style.Element}
           />
           <TextInput
             onChangeText={setPassword}
+            placeholder="Password"
+            placeholderTextColor={"gray"}
             value={password}
             style={style.Element}
           />
-          <TextInput style={style.Element}>
-            {" "}
-            Place holder for entering password again{" "}
-          </TextInput>
+          <TextInput
+            style={style.Element}
+            placeholder="Enter Password again "
+            placeholderTextColor={"gray"}
+          />
           <TextInput
             onChangeText={setCode}
+            placeholder="Code"
+            placeholderTextColor={"gray"}
             value={code}
             style={style.Element}
           />

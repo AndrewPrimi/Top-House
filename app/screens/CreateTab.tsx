@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
+  Alert,
   Image,
   Pressable,
   SafeAreaView,
@@ -14,8 +15,10 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RichTextEditor from "../components/RichTextEditor";
+import { auth } from "../firebaseConfig";
 
 export default function CreateTab() {
+  const user = auth.currentUser;
   const bodyRef = useRef("");
   const editorRef = useRef(null);
   const router = useRouter();
@@ -57,7 +60,7 @@ export default function CreateTab() {
     }
 
     if (typeof file === "string") {
-      if (file.includes("postImage") || file.endsWith(".jpg")) return "image";
+      if (file.includes("postImages") || file.endsWith(".jpg")) return "image";
       if (file.includes("video") || file.endsWith(".mp4")) return "video";
     }
 
@@ -71,7 +74,19 @@ export default function CreateTab() {
     }
   };
 
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    if (!bodyRef.current && !file) {
+      Alert.alert("Post", "please choose an image or add post body ");
+      return;
+    }
+    let data = {
+      file,
+      body: bodyRef.current,
+      userId: user?.uid,
+    };
+
+    //createPost
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: "center" }}>
@@ -211,11 +226,12 @@ const style = StyleSheet.create({
   button: {
     borderRadius: 10,
     borderWidth: 1.5,
-    backgroundColor: "rgba(152, 251, 152, 1)",
+    backgroundColor: "#299617",
     paddingVertical: 12,
     alignItems: "center",
     marginTop: 20,
     marginHorizontal: 20,
+    borderColor: "#299617",
   },
   file: {
     height: 300,
